@@ -1,0 +1,15 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 231 48" width="231" height="48">
+	<title>auth-logo</title>
+	<style>
+		tspan { white-space:pre } 
+		.s0 { fill: #465fff } 
+		.t1 { font-size: 24px;fill: #ffffff;font-weight: 400;font-family: "DejaVuSans", "DejaVu Sans" } 
+	</style>
+	<path class="s0" d="m0.4 12.6c0-6.9 5.7-12.6 12.7-12.6h22.7c7 0 12.6 5.7 12.6 12.6v22.8c0 6.9-5.6 12.6-12.6 12.6h-22.7c-7 0-12.7-5.7-12.7-12.6z"/>
+	<g>
+	</g>
+	<text id="Your Logo" style="transform: matrix(1.517,0,0,1.517,54.987,35.097)" >
+		<tspan x="0" y="0" class="t1">Y</tspan><tspan  y="0" class="t1">o</tspan><tspan  y="0" class="t1">u</tspan><tspan  y="0" class="t1">r</tspan><tspan  y="0" class="t1"> </tspan><tspan  y="0" class="t1">L</tspan><tspan  y="0" class="t1">o</tspan><tspan  y="0" class="t1">g</tspan><tspan  y="0" class="t1">o
+</tspan>
+	</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+	<title>country-01</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m16 0c8.84 0 16 7.16 16 16 0 8.84-7.16 16-16 16-8.84 0-16-7.16-16-16 0-8.84 7.16-16 16-16z"/>
+		</clipPath>
+		<image  width="49" height="32" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAgCAMAAACMyGAQAAAAAXNSR0IB2cksfwAAAXdQTFRF/5k0/5k0/5k0/bdw/7hx9a5s2ZNe0Itb4Zti+7Vv/7hx+fn5/////f7+q6zUQUKeVlamY2OtWFmmV1eo1NXo/////v7+j4/EYWGsw8Pdvr7Zy8zizc7ira7SPT6bzs7lxsbhVlenxMXcnJ3Jh4e+a2yvhIS8tLXVv7/aPz+c+Pj7Z2ivpKTNra3RWFilRUWbVlaiSEiccHGyrK3RbG2xs7TY/Pz9RUaeycrglpfGPj6XamqtPz+bY2SqSUqepqbNnp/Le3u7RESez8/kmZrIPT2XV1ilKiuSXV2mTU2fq6zPtrfWd3i4XF2rqarQoKHLVVWkNTWTTEyeOjqWfH24qqvQfHy6qanSvL3cWVmpycnhnZ3JhIW9WlumeHi2sbHTw8TdQUKc9PT5fn67e3u5xsfdxMTdxMXeycrhtbbVR0efvLzb+vr8kpLGPT2adnW4TU2jvr/dcrZudLhwYKRlOX1RK29LRYlYaq5rdLhwE4cIE4cIE4cIxvzAcQAAAH10Uk5T2/9J2////////0nb////////////Sf//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////2////////0nb/0n99bdWAAAAgUlEQVR4nGNkYGQgCTAyjuoY6jqYsepgBIHf2GTYGLmx6GCEgh9YdHBi08EF08H4lkgdInAdjI+I0yGP0HGdKB1aCA2Mp4nTwYPQcYA4VzkidGwlTocPQscq4nRo6cI0LMSQw66DIYGRca/LPWXG2ZhSQB1FJKeSKpJT4qiOIa4DAJ0oFGJS+NmbAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<use id="Layer 1" href="#img1" x="-8" y="0"/>
+	</g>
+</svg>

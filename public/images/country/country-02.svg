@@ -1,0 +1,14 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+	<title>country-01</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m16 0c8.84 0 16 7.16 16 16 0 8.84-7.16 16-16 16-8.84 0-16-7.16-16-16 0-8.84 7.16-16 16-16z"/>
+		</clipPath>
+		<image  width="34" height="41" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAApCAMAAABnXgszAAAAAXNSR0IB2cksfwAAAspQTFRFADiTADiTAAAAADiTADiTADiTADiTVipxDTaOADiTADiTox1TzRdCWCpwCDeQADiTADiT3BQ81xU+mB9XKTGDADiTADiTADiT1BU/diVlAzeSADiTADiTtxpLPi57ADiTADiTADiThiJeFTWLADiTADiTADaSxxhEADiTADiTADiTnh5VITOGADiTADiTADaT2BU+cSZmDDaOADiTADiT2xQ9Qy15BjeRADiTADiT3Rc/4j1e4j9f3ylN3RlAfSRiFzSKADiTADiT3ypO3BU93iJI8Z6v+t7k/vb4+dnf5lp23RpB3yVK3RxD0BZBUStzBTeRADiTADiT4TdY6GF83Rg/6WuE/fT2////+trh4TVY3RtC8Jep3RhA2hQ9nB9VLTGBADiTADiTADiT+M/Y6GeB9brF/vr76m+I8Jqr63uR1RU/aSdqCjaPADiT52B7/e7x/e7w//7//Oru+dXcuxlJSix2ATiTADiTADiT63iP/fH0+dfe40RkfyNhHzOHADiTADiTADeT4TdZ8668++Po/e/y+dTb7YSZ3iFHyBdESCx3ATiTADiTzxZBvBlJgyNfADiTADeTyhdDKzGCADiTADiTADiTADiTADiTADiTADiTADiTMTCAADiTJzKDADiTADiT4TRX7IGW3R5E3iNJxhhFNy99ADiTADiT8Z2u6W2G6WaA/fP14jpb86y65EdmvRlI3iRK7H6U/vf5/vj54TZY3R1EKDKD63qR+tzi//z9+NHY3ypPOC999LK/ADiT40Jj++To7Yec4CxQ7YWa+t3j9r/K51x43RxC3iFG98bP7YOY9brG98fQ9LTB9b7J4TRW7Yab/vX2++Dl+t/lOy98ADiT8Jus5Elo5lh13yZLNTB+ADiTADiT3iBG51963BU8MjCAADiTkiBaxBhGuBpKIzKFADiTCzaPDzaNCTeQADiTADiTnAtJ8wAAAO50Uk5TrzEA/+NxC///xTP////4mhb/////zU4E///7tyD//+xzCP//yzYA//WQDP//01YA////uSL//+Z/Dv////////+9NP/////////////////5lQ3//////////////////9FbBv////////////wY///////////vggr///////y7OgD////////////3jP///98B///8+a4a4C0kEP++/8QZ////////yhf/////////////////////////////0P/////////////////////////////X///////JH//////G/////9XV1dWgCTO4GyoAAAIESURBVHichdRNSBtBFAfw9/eropVQrAFF0EIuHiwWRRQJCnpIDypSL5FWCJYQRDR48yDo0kMtVDAqGjzYFkWPHkQq7cFCsbRF8ePiwUL1oDF6kD0pfs7baZLduE7nEGYmv3lv3uzsggBSN6QCuPwPSRPmTE0ywU1XkgzD4FhFiB6wOVASooeM9pSE6BGjXSUh598nwI6SEBVwoG0loSI260pCrki+QD/tSEk8RZFD9FaSSBXWKuTprdbgO5GbuwsW4jH+Fl1ui2Ku0ehNm0h1sXxEnGFOzrZxxDHTXtqBQ1ny4VJs6WsONBQnJXX4Y5SD2EIOlMtoIFZRea3c7ltLsX1i5mTIfC79dy8oRrs3y4IJoqEnZHONRajE6WpIt7vqZkJaFnptLmicNHwV59oC+O4hI5/O/d2j6BoXmb32JCyL9tGHk7u5mHyc8s++nHE0Yftpm7szkpyLyTx+8z3ouElBKzknokm5mJQOhuXghV/8OCdSjrxJZOl68t9xdGK/S9QVjJ77rGQZCMlBD+Ax4uwHdQvJWMZ7OSiTT5+cIwfZXgv5ArwTXUcAqJOz7ubsRC55Lt+AN/2hwuH4Sq0e1bqF/ADCgejjqsQGtOeAy0w+e9bxbOOV+UV0j60GdBOxa1p9TqmuJsJsVbrUhLTmi3Kdyd79H1Xg9JePEFF9d3GVhrxbJox2rPXwxUYAAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<use id="Layer 2" href="#img1" x="0" y="-6"/>
+	</g>
+</svg>

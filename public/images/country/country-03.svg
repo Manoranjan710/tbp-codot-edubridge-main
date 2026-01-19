@@ -1,0 +1,14 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+	<title>country-01</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m16 0c8.84 0 16 7.16 16 16 0 8.84-7.16 16-16 16-8.84 0-16-7.16-16-16 0-8.84 7.16-16 16-16z"/>
+		</clipPath>
+		<image  width="49" height="32" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAgCAMAAACMyGAQAAAAAXNSR0IB2cksfwAAAVZQTFRF////////RHBUAUEcAUEcAkEcBUMeA0IdR3JXco96EUsoCEUgjaaVxdHIFE0qBEMeBkQfqr2v8vXzNWVGHVQyeZaCCkYhGVAtg5+MorepA0IcF1At4ObhkqqZzNbPIFY0J1s69/j3XoRsIVY0kqqa9Pb0oLWnmbCgMGFCAkIdPGpMf5yI5enm/f797/PwKl09FU8s3+Xh9fb1AUAap7qsYYRrJFc2R3FVBEIdNGVG9/n4IVY1UXleAUEbSHNYN2dJAkIcSXVZao12OmlMtMS4GlIw6O3q/P38UXlfp7ut5+zoI1c2O2pN/f392eDaQ21Ro7eo6u7rZYlxDEcjG1Mxm7KjW4BnD0kmytXN4efijKaUWH9lR3JWYIVsqbuu7/LwkamYE0wpr8C0+Pr5h6KQDEgkbY546Ozp0NrTTnhcAUAbCkYiR3JVlaybu8rAtMW5gp6KNGRFeiHBQQAAAHJ0Uk5T2////0n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+n5KvAAAASBJREFUeJxjZGBkgANGJDYuAFQzqgNDBxPjX5J0sDAyMv4kRQcHUMNXiFaOL8To4AVq+ABhCjJ+EGR8Q1CH6EsJxpcQpgRQM+MTQjpkGR8oPoQwFRgZ76jeJegqlVsM6rfBLDVGMLhCQIcu4wXDtzCHGIC1nMavw+wEgyXjCZioJeMxBhQ1WHRYH2ZgsDsCE7U9zEBQh90BBgbHgwxYAXYdDvsYGJzPfCZBhxPjbgY3ICZeB5PLDgYGT8YdxOsAqt7CwOB76zZMgsnr+Fv8Ohh8NwKJAEbGDSCOlTgj41oCdjCEMK4EURGMjMujQBG44TMhHQxxjE93wdhJjFdOMxDUAVTGOAvCSmdknEnQ52CQAXTNfKDGlS+RRQe6LBlSOgBl1Tmh0aGk+gAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<use id="Layer 3" href="#img1" x="-8" y="0"/>
+	</g>
+</svg>

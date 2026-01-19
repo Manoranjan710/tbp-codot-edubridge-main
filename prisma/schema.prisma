@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Agent {
+  id         String   @id @default(cuid())
+  first_name String
+  last_name  String
+  address    String
+  email      String   @unique
+  country    String
+  status     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Student {
+  id                     Int       @id @default(autoincrement())
+  agentId                Int?
+  providerCode           String?
+  coeCode                String?
+  coeStatus              String?
+  coeType                String?
+  principalCoe           String?
+  immigrationPost        String?
+  providerStudentId      String?
+  courtesyTitle          String?
+  firstName              String?
+  secondName             String?
+  familyName             String?
+  gender                 String?
+  dateOfBirth            String?
+  countryOfBirth         String?
+  nationality            String?
+  countryOfPassport      String?
+  passportNumber         String?
+  emailAddress           String?
+  mobile                 String?
+  phone                  String?
+  studentAddressLine1    String?
+  studentAddressLine2    String?
+  studentAddressLine3    String?
+  studentAddressLine4    String?
+  studentAddressLocality String?
+  studentAddressState    String?
+  studentAddressCountry  String?
+  studentAddressPostCode String?
+  oshc                   String?
+  oshcStartDate          String?
+  oshcEndDate            String?
+  oshcProvider           String?
+  englishTestType        String?
+  englishTestScore       String?
+  englishTestDate        String?
+  courseCode             String?
+  courseName             String?
+  courseSector           String?
+  courseLevel            String?
+  durationInWeeks        String?
+  currentTotalCourseFee  String?
+  proposedStartDate      String?
+  proposedEndDate        String?
+  actualStartDate        String?
+  actualEndDate          String?
+  totalCourseFee         String?
+  prepaidCourseFee       String?
+  visaGranted            String?
+  visaGrantStatus        String?
+  visaGrantNumber        String?
+  coeCreatedDate         String?
+  createdBy              String?
+  coeLastUpdated         String?
+  locationName           String?
+  activeLocation         String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+}

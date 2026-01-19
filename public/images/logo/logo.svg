@@ -1,0 +1,15 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 154 32" width="154" height="32">
+	<title>logo</title>
+	<style>
+		tspan { white-space:pre } 
+		.s0 { fill: #465fff } 
+		.t1 { font-size: 24px;fill: #054ac2;font-weight: 400;font-family: "DejaVuSans", "DejaVu Sans" } 
+	</style>
+	<path class="s0" d="m0 8.4c0-4.6 3.8-8.4 8.4-8.4h15.2c4.6 0 8.4 3.8 8.4 8.4v15.2c0 4.6-3.8 8.4-8.4 8.4h-15.2c-4.6 0-8.4-3.8-8.4-8.4z"/>
+	<g>
+	</g>
+	<text id="Your Logo" style="transform: matrix(1.002,0,0,1.002,33.494,21.679)" >
+		<tspan x="0" y="0" class="t1">Y</tspan><tspan  y="0" class="t1">o</tspan><tspan  y="0" class="t1">u</tspan><tspan  y="0" class="t1">r</tspan><tspan  y="0" class="t1"> </tspan><tspan  y="0" class="t1">L</tspan><tspan  y="0" class="t1">o</tspan><tspan  y="0" class="t1">g</tspan><tspan  y="0" class="t1">o
+</tspan>
+	</text>
+</svg>
