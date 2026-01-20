@@ -112,7 +112,7 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
-  const { user } = useAuth();
+  const { user, isInitialized } = useAuth();
   const pathname = usePathname();
 
   // Filter menu items based on user role

@@ -38,8 +38,11 @@ export default function SignInForm() {
       if (result.success) {
         // Store user data in AuthContext (which saves to localStorage)
         setUser(result.user);
-        router.push('/dashboard');
-        router.refresh(); // Refresh to update auth state
+        
+        // Small delay to ensure state update
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 100);
       } else {
         setError(result.message || 'Sign in failed');
       }
