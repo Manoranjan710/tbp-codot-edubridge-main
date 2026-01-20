@@ -39,7 +39,7 @@ model Agent {
 
 model Student {
   id                     Int       @id @default(autoincrement())
-  agentId                Int?
+  agentId                String?
   providerCode           String?
   coeCode                String?
   coeStatus              String?
