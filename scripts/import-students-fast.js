@@ -11,8 +11,7 @@ async function importStudents() {
     await prisma.student.deleteMany({});
     console.log('🗑️  Cleared existing student data');
 
-    const csvFilePath = path.resolve('/Applications/Works/college_agent/Export for CoE and Student Details as at 2022-3-8 11-01-52.csv');
-    
+    const csvFilePath = path.resolve(__dirname, '../Export for CoE and Student Details as at 2022-3-8 11-01-52.csv');    
     if (!fs.existsSync(csvFilePath)) {
       throw new Error(`CSV file not found: ${csvFilePath}`);
     }

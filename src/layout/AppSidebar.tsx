@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
+import { useAuth } from "../context/AuthContext";
 import {
   BoxCubeIcon,
   CalenderIcon,
@@ -111,7 +112,32 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { user } = useAuth();
   const pathname = usePathname();
+
+  // Filter menu items based on user role
+  const getFilteredNavItems = (): NavItem[] => {
+    if (user?.role === 'agent') {
+      // For agent role, only show: Dashboard, Student Applications, Transactions, PRISMS
+      return navItems.filter((item) => 
+        item.name === 'Dashboard' ||
+        item.name === 'Student Applications' ||
+        item.name === 'Transactions' ||
+        item.name === 'PRISMS'
+      );
+    }
+    // For admin and other roles, show all items
+    return navItems;
+  };
+
+  const getFilteredOthersItems = (): NavItem[] => {
+    if (user?.role === 'agent') {
+      // For agent role, hide all "System & Settings" items
+      return [];
+    }
+    // For admin and other roles, show all items
+    return othersItems;
+  };
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -367,25 +393,27 @@ const AppSidebar: React.FC = () => {
                   <HorizontaLDots />
                 )}
               </h2>
-              {renderMenuItems(navItems, "main")}
+              {renderMenuItems(getFilteredNavItems(), "main")}
             </div>
 
-            <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "System & Settings"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div>
+            {getFilteredOthersItems().length > 0 && (
+              <div className="">
+                <h2
+                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
+                    !isExpanded && !isHovered
+                      ? "lg:justify-center"
+                      : "justify-start"
+                  }`}
+                >
+                  {isExpanded || isHovered || isMobileOpen ? (
+                    "System & Settings"
+                  ) : (
+                    <HorizontaLDots />
+                  )}
+                </h2>
+                {renderMenuItems(getFilteredOthersItems(), "others")}
+              </div>
+            )}
           </div>
         </nav>
         {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}

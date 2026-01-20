@@ -1,0 +1,11 @@
+Id,first_name,last_name,Address,email,Country,Status,date_of_application
+1,Sophia,Williams,456 Oak Ave,sophia.williams@example.com,India,1,2025-02-21
+2,Jane,Miller,321 Maple Dr,jane.miller@example.com,Australia,1,2025-01-13
+3,David,Smith,789 Pine Rd,david.smith@example.com,Australia,1,2025-03-11
+4,Chris,Garcia,987 Birch Blvd,chris.garcia@example.com,Australia,1,2024-12-27
+5,David,Williams,987 Birch Blvd,david.williams@example.com,USA,0,2025-01-21
+6,Olivia,Brown,123 Main St,olivia.brown@example.com,Canada,0,2024-11-16
+7,Jane,Davis,789 Pine Rd,jane.davis@example.com,Canada,0,2024-11-08
+8,Emily,Jones,456 Oak Ave,emily.jones@example.com,Brazil,1,2025-02-25
+9,Jane,Smith,321 Maple Dr,jane.smith@example.com,Australia,0,2024-09-11
+10,Michael,Smith,789 Pine Rd,michael.smith@example.com,UK,0,2025-07-31

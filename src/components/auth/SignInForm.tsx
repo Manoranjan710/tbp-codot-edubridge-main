@@ -4,6 +4,7 @@ import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -16,6 +17,7 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +36,8 @@ export default function SignInForm() {
       const result = await response.json();
 
       if (result.success) {
+        // Store user data in AuthContext (which saves to localStorage)
+        setUser(result.user);
         router.push('/dashboard');
         router.refresh(); // Refresh to update auth state
       } else {
@@ -71,9 +75,9 @@ export default function SignInForm() {
               </div>
             )}
             <div className="mt-3 p-3 text-sm text-blue-600 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400">
-              <strong>Test Account:</strong><br />
-              Email: admin@college.com<br />
-              Password: password123
+              <strong>Test Accounts:</strong><br />
+              <strong>Admin:</strong> admin@college.com / password123<br />
+              <strong>Agent:</strong> sophia.williams@example.com / agent123
             </div>
           </div>
           <div>
