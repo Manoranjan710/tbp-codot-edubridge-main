@@ -1,53 +1,30 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 // import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import ChartTab from "../common/ChartTab";
 import dynamic from "next/dynamic";
+import type { DashboardData } from "@/types/dashboard";
 
 // Dynamically import the ReactApexChart component
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-interface AgentPerformanceData {
-  month: string;
-  totalAgents: number;
-  lowPerformingAgents: number;
+interface StatisticsChartProps {
+  data: DashboardData;
+  loading: boolean;
+  isAgent: boolean;
 }
 
-interface MetricsData {
-  monthlyApplications: { month: string; applications: number; approvals: number; }[];
-  monthlyAgentPerformance: AgentPerformanceData[];
-}
-
-export default function StatisticsChart() {
-  const [metrics, setMetrics] = useState<MetricsData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        const response = await fetch('/api/dashboard/metrics');
-        const result = await response.json();
-        if (result.success) {
-          setMetrics(result.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch metrics:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMetrics();
-  }, []);
+export default function StatisticsChart({ data, loading, isAgent }: StatisticsChartProps) {
+  const metrics = data?.metrics;
 
   const getMonthlyData = () => {
     if (!metrics) return { totalAgents: [], lowPerformingAgents: [] };
     return {
-      totalAgents: metrics.monthlyAgentPerformance.map(item => item.totalAgents),
-      lowPerformingAgents: metrics.monthlyAgentPerformance.map(item => item.lowPerformingAgents)
+      totalAgents: metrics.monthlyAgentPerformance?.map(item => item.totalAgents) || [],
+      lowPerformingAgents: metrics.monthlyAgentPerformance?.map(item => item.lowPerformingAgents) || []
     };
   };
 

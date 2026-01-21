@@ -3,45 +3,24 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { MoreDotIcon } from "@/icons";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { useState, useEffect } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
+import { useState } from "react";
+import type { DashboardData } from "@/types/dashboard";
 
 // Dynamically import the ReactApexChart component
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-interface MonthlyStats {
-  month: string;
-  applications: number;
-  approvals: number;
+interface MonthlySalesChartProps {
+  data: DashboardData;
+  loading: boolean;
+  isAgent: boolean;
 }
 
-interface MetricsData {
-  monthlyApplications: MonthlyStats[];
-}
-
-export default function MonthlySalesChart() {
-  const [metrics, setMetrics] = useState<MetricsData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        const response = await fetch('/api/dashboard/metrics');
-        const result = await response.json();
-        if (result.success) {
-          setMetrics(result.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch metrics:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMetrics();
-  }, []);
+export default function MonthlySalesChart({ data, loading, isAgent }: MonthlySalesChartProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const metrics = data?.metrics;
 
   const options: ApexOptions = {
     colors: ["#465fff"],
@@ -70,7 +49,7 @@ export default function MonthlySalesChart() {
       colors: ["transparent"],
     },
     xaxis: {
-      categories: metrics?.monthlyApplications.map(item => item.month) || [
+      categories: metrics?.monthlyApplications?.map(item => item.month) || [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ],
@@ -116,10 +95,9 @@ export default function MonthlySalesChart() {
   const series = [
     {
       name: "Applications",
-      data: metrics?.monthlyApplications.map(item => item.applications) || [0],
+      data: metrics?.monthlyApplications?.map(item => item.applications) || [0],
     },
   ];
-  const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {
     setIsOpen(!isOpen);

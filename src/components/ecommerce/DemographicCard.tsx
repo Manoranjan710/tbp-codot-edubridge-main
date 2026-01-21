@@ -2,46 +2,21 @@
 import Image from "next/image";
 
 import CountryMap from "./CountryMap";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MoreDotIcon } from "@/icons";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
+import type { DashboardData } from "@/types/dashboard";
 
-interface DemographicData {
-  country: string;
-  students: number;
-  percentage: number;
+interface DemographicCardProps {
+  data: DashboardData;
+  loading: boolean;
+  isAgent: boolean;
 }
 
-interface MetricsData {
-  demographics: DemographicData[];
-  overview: {
-    totalStudents: number;
-  };
-}
-
-export default function DemographicCard() {
+export default function DemographicCard({ data, loading, isAgent }: DemographicCardProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [metrics, setMetrics] = useState<MetricsData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        const response = await fetch('/api/dashboard/metrics');
-        const result = await response.json();
-        if (result.success) {
-          setMetrics(result.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch metrics:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMetrics();
-  }, []);
+  const metrics = data?.metrics;
 
   const getCountryFlag = (country: string) => {
     const countryMappings: { [key: string]: string } = {

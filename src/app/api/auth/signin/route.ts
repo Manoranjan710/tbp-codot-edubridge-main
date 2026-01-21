@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     if (email.toLowerCase() === 'sophia.williams@example.com' && password === 'agent123') {
       const token = jwt.sign(
         { 
-          userId: 'cmkm5j22k0000w4xowr2pejsa', 
+          userId: 'cmknjccbg0000w4g8e17hgi4g', 
           email: email.toLowerCase(),
           role: 'agent' 
         },
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
         success: true,
         message: 'Sign in successful',
         user: {
-          id: 'cmkm5j22k0000w4xowr2pejsa',
+          id: 'cmknjccbg0000w4g8e17hgi4g',
           email: email.toLowerCase(),
           firstName: 'Sophia',
           lastName: 'Williams',

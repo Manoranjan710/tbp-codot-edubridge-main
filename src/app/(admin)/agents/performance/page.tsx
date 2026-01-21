@@ -72,12 +72,7 @@ const AgentPerformancePage = () => {
     return (
       <>
         <PageBreadCrumb
-          title="Agent Performance"
-          breadcrumbs={[
-            { name: 'Dashboard', href: '/dashboard' },
-            { name: 'Agents', href: '/agents' },
-            { name: 'Performance', href: '/agents/performance' },
-          ]}
+          pageTitle="Agent Performance"
         />
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
@@ -95,12 +90,7 @@ const AgentPerformancePage = () => {
     return (
       <>
         <PageBreadCrumb
-          title="Agent Performance"
-          breadcrumbs={[
-            { name: 'Dashboard', href: '/dashboard' },
-            { name: 'Agents', href: '/agents' },
-            { name: 'Performance', href: '/agents/performance' },
-          ]}
+          pageTitle="Agent Performance"
         />
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
@@ -129,12 +119,7 @@ const AgentPerformancePage = () => {
   return (
     <>
       <PageBreadCrumb
-        title="Agent Performance"
-        breadcrumbs={[
-          { name: 'Dashboard', href: '/dashboard' },
-          { name: 'Agents', href: '/agents' },
-          { name: 'Performance', href: '/agents/performance' },
-        ]}
+        pageTitle="Agent Performance"
       />
       
       <div className="mb-6">
@@ -147,7 +132,7 @@ const AgentPerformancePage = () => {
           </div>
           <button
             onClick={fetchAgentPerformance}
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Refresh Data
           </button>

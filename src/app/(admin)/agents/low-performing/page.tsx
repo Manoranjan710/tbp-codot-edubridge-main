@@ -90,12 +90,7 @@ const LowPerformingAgentsPage = () => {
     return (
       <>
         <PageBreadCrumb
-          title="Low Performing Agents"
-          breadcrumbs={[
-            { name: 'Dashboard', href: '/dashboard' },
-            { name: 'Agents', href: '/agents' },
-            { name: 'Low Performing', href: '/agents/low-performing' },
-          ]}
+          pageTitle="Low Performing Agents"
         />
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
@@ -113,12 +108,7 @@ const LowPerformingAgentsPage = () => {
     return (
       <>
         <PageBreadCrumb
-          title="Low Performing Agents"
-          breadcrumbs={[
-            { name: 'Dashboard', href: '/dashboard' },
-            { name: 'Agents', href: '/agents' },
-            { name: 'Low Performing', href: '/agents/low-performing' },
-          ]}
+          pageTitle="Low Performing Agents"
         />
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
@@ -157,12 +147,7 @@ const LowPerformingAgentsPage = () => {
   return (
     <>
       <PageBreadCrumb
-        title="Low Performing Agents"
-        breadcrumbs={[
-          { name: 'Dashboard', href: '/dashboard' },
-          { name: 'Agents', href: '/agents' },
-          { name: 'Low Performing', href: '/agents/low-performing' },
-        ]}
+        pageTitle="Low Performing Agents"
       />
       
       <div className="mb-6">
@@ -175,7 +160,7 @@ const LowPerformingAgentsPage = () => {
           </div>
           <button
             onClick={fetchLowPerformingAgents}
-            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           >
             Refresh Analysis
           </button>

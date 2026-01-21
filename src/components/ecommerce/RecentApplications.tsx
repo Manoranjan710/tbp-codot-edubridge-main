@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,19 +7,12 @@ import {
   TableRow,
 } from "../ui/table";
 import Badge from "../ui/badge/Badge";
+import type { DashboardData } from "@/types/dashboard";
 
-interface RecentApplication {
-  id: number;
-  firstName: string;
-  familyName: string;
-  courseCode: string;
-  courseName: string;
-  coeStatus: string;
-  visaGrantStatus: string;
-  countryOfBirth: string;
-  agentId: number;
-  agentName: string;
-  createdAt: string;
+interface RecentApplicationsProps {
+  data: DashboardData;
+  loading: boolean;
+  isAgent: boolean;
 }
 
 const getStatusBadgeColor = (status: string) => {
@@ -71,28 +63,7 @@ const formatDate = (dateString: string) => {
   });
 };
 
-export default function RecentApplications() {
-  const [applications, setApplications] = useState<RecentApplication[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await fetch('/api/students/recent');
-        const result = await response.json();
-        if (result.success) {
-          setApplications(result.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch recent applications:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApplications();
-  }, []);
-
+export default function RecentApplications({ data, loading, isAgent }: RecentApplicationsProps) {
   if (loading) {
     return (
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
@@ -120,6 +91,8 @@ export default function RecentApplications() {
       </div>
     );
   }
+
+  const students = isAgent ? data?.studentData?.data?.slice(0, 10) || [] : [];
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
@@ -222,22 +195,22 @@ export default function RecentApplications() {
           </TableHeader>
 
           <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
-            {applications.map((application) => (
-              <TableRow key={application.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+            {students.map((student: any) => (
+              <TableRow key={student.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
                 <TableCell className="py-3">
                   <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full">
                       <span className="text-white font-medium text-sm">
-                        {application.firstName.charAt(0)}{application.familyName.charAt(0)}
+                        {student.firstName?.charAt(0) || 'S'}{student.familyName?.charAt(0) || 'S'}
                       </span>
                     </div>
                     <div>
                       <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                        {application.firstName} {application.familyName}
+                        {student.firstName} {student.familyName}
                       </p>
                       <div className="flex items-center gap-1 text-gray-500 text-theme-xs dark:text-gray-400">
-                        <span className="text-base">{getCountryFlag(application.countryOfBirth)}</span>
-                        <span>{application.countryOfBirth}</span>
+                        <span className="text-base">{getCountryFlag(student.countryOfBirth)}</span>
+                        <span>{student.countryOfBirth}</span>
                       </div>
                     </div>
                   </div>
@@ -246,12 +219,12 @@ export default function RecentApplications() {
                 <TableCell className="py-3">
                   <div>
                     <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                      {application.courseCode}
+                      {student.courseCode}
                     </p>
                     <span className="text-gray-500 text-theme-xs dark:text-gray-400">
-                      {application.courseName.length > 30 
-                        ? `${application.courseName.substring(0, 30)}...` 
-                        : application.courseName}
+                      {(student.courseName && student.courseName.length > 30 
+                        ? `${student.courseName.substring(0, 30)}...` 
+                        : student.courseName) || 'N/A'}
                     </span>
                   </div>
                 </TableCell>
@@ -259,10 +232,10 @@ export default function RecentApplications() {
                 <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                   <div>
                     <p className="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                      {application.agentName}
+                      {student.agentName || 'N/A'}
                     </p>
                     <span className="text-gray-500 text-theme-xs dark:text-gray-400">
-                      ID: {application.agentId}
+                      ID: {student.agentId || 'N/A'}
                     </span>
                   </div>
                 </TableCell>
@@ -270,26 +243,35 @@ export default function RecentApplications() {
                 <TableCell className="py-3">
                   <Badge
                     size="sm"
-                    color={getStatusBadgeColor(application.coeStatus)}
+                    color={getStatusBadgeColor(student.coeStatus)}
                   >
-                    {application.coeStatus}
+                    {student.coeStatus || 'Pending'}
                   </Badge>
                 </TableCell>
                 
                 <TableCell className="py-3">
                   <Badge
                     size="sm"
-                    color={getStatusBadgeColor(application.visaGrantStatus)}
+                    color={getStatusBadgeColor(student.visaGranted)}
                   >
-                    {application.visaGrantStatus || 'Pending'}
+                    {student.visaGranted ? 'Granted' : 'Pending'}
                   </Badge>
                 </TableCell>
                 
                 <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  {formatDate(application.createdAt)}
+                  {formatDate(student.createdAt)}
                 </TableCell>
               </TableRow>
             ))}
+            {students.length === 0 && (
+              <TableRow>
+                <TableCell className="py-8 text-center text-gray-500">
+                  <div className="col-span-6">
+                    {isAgent ? 'No students assigned' : 'No applications to display'}
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>

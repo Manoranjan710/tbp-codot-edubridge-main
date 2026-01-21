@@ -5,45 +5,24 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { MoreDotIcon } from "@/icons";
-import { useState, useEffect } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
+import type { DashboardData } from "@/types/dashboard";
+import { useState } from "react";
 // Dynamically import the ReactApexChart component
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-interface MetricsData {
-  agentPerformance: {
-    totalApplications: number;
-    approvalRate: number;
-    currentMonth: number;
-    target: number;
-  };
+interface MonthlyTargetProps {
+  data: DashboardData;
+  loading: boolean;
+  isAgent: boolean;
 }
 
-export default function MonthlyTarget() {
-  const [metrics, setMetrics] = useState<MetricsData | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function MonthlyTarget({ data, loading, isAgent }: MonthlyTargetProps) {
+  const metrics = data?.metrics;
 
-  useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        const response = await fetch('/api/dashboard/metrics');
-        const result = await response.json();
-        if (result.success) {
-          setMetrics(result.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch metrics:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMetrics();
-  }, []);
-
-  const approvalRate = metrics?.agentPerformance.approvalRate || 0;
+  const approvalRate = metrics?.agentPerformance?.approvalRate || 0;
   const series = [approvalRate];
   const options: ApexOptions = {
     colors: ["#465FFF"],
@@ -168,7 +147,7 @@ export default function MonthlyTarget() {
           </span>
         </div>
         <p className="mx-auto mt-10 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-          {metrics?.agentPerformance.currentMonth || 0} applications approved this month.
+          {metrics?.agentPerformance?.currentMonth || 0} applications approved this month.
           {approvalRate >= 85 ? ' Excellent performance!' : approvalRate >= 70 ? ' Good progress!' : ' Room for improvement.'}
         </p>
       </div>
@@ -179,7 +158,7 @@ export default function MonthlyTarget() {
             Target
           </p>
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-            {metrics?.agentPerformance.target || 0}
+            {metrics?.agentPerformance?.target || 0}
             <svg
               width="16"
               height="16"
@@ -204,7 +183,7 @@ export default function MonthlyTarget() {
             Approved
           </p>
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-            {metrics?.agentPerformance.currentMonth || 0}
+            {metrics?.agentPerformance?.currentMonth || 0}
             <svg
               width="16"
               height="16"
@@ -229,7 +208,7 @@ export default function MonthlyTarget() {
             Total Apps
           </p>
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-            {metrics?.agentPerformance.totalApplications || 0}
+            {metrics?.agentPerformance?.totalApplications || 0}
             <svg
               width="16"
               height="16"
