@@ -28,6 +28,7 @@ interface FinanceOverview {
   monthlyTrends: MonthlyFinancials[];
   revenueBreakdown: RevenueBreakdown[];
   topPerformingAgents: {
+    agentId: string;
     agentName: string;
     revenue: number;
     commission: number;
@@ -35,108 +36,92 @@ interface FinanceOverview {
   }[];
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const now = new Date();
-    const commissionRate = 15; // 15% commission rate
+    const { searchParams } = new URL(req.url);
+    const agentId = searchParams.get('agentId'); // STRING (CUID)
 
-    // Get all students with approved visas and their course fees
+    const commissionRate = 15;
+    const now = new Date();
+
+    /* ----------------------------------
+       1️⃣ Fetch approved students
+    ---------------------------------- */
     const approvedStudents = await prisma.student.findMany({
       where: {
-        visaGrantStatus: 'In Effect'
+        visaGrantStatus: 'In Effect',
+        ...(agentId ? { agentId } : {})
       },
       select: {
         agentId: true,
         totalCourseFee: true,
-        createdAt: true,
-        firstName: true,
-        familyName: true
+        createdAt: true
       }
     });
 
-    // Calculate total revenue and commissions
-    let totalRevenue = 0;
-    approvedStudents.forEach(student => {
-      if (student.totalCourseFee) {
-        const feeString = student.totalCourseFee.replace(/[^\d.-]/g, '');
-        const fee = parseFloat(feeString) || 0;
-        totalRevenue += fee;
-      }
-    });
+    /* ----------------------------------
+       2️⃣ Revenue calculations
+    ---------------------------------- */
+    const calculateRevenue = (students: typeof approvedStudents) =>
+      students.reduce((sum, s) => {
+        if (!s.totalCourseFee) return sum;
+        const fee = parseFloat(s.totalCourseFee.replace(/[^\d.-]/g, '')) || 0;
+        return sum + fee;
+      }, 0);
 
+    const totalRevenue = calculateRevenue(approvedStudents);
     const totalCommissions = (totalRevenue * commissionRate) / 100;
     const netIncome = totalRevenue - totalCommissions;
     const totalStudents = approvedStudents.length;
-    const averageRevenuePerStudent = totalStudents > 0 ? totalRevenue / totalStudents : 0;
-    const profitMargin = totalRevenue > 0 ? (netIncome / totalRevenue) * 100 : 0;
 
-    // Generate monthly trends for the last 12 months
+    /* ----------------------------------
+       3️⃣ Monthly trends (last 12 months)
+    ---------------------------------- */
     const monthlyTrends: MonthlyFinancials[] = [];
-    
+
     for (let i = 11; i >= 0; i--) {
-      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const nextMonth = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      
-      const monthStudents = approvedStudents.filter(student => {
-        const studentDate = new Date(student.createdAt);
-        return studentDate >= date && studentDate < nextMonth;
+      const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
+
+      const monthStudents = approvedStudents.filter(s => {
+        const d = new Date(s.createdAt);
+        return d >= start && d < end;
       });
 
-      let monthRevenue = 0;
-      monthStudents.forEach(student => {
-        if (student.totalCourseFee) {
-          const feeString = student.totalCourseFee.replace(/[^\d.-]/g, '');
-          const fee = parseFloat(feeString) || 0;
-          monthRevenue += fee;
-        }
-      });
-
-      const monthCommissions = (monthRevenue * commissionRate) / 100;
-      const monthNetIncome = monthRevenue - monthCommissions;
+      const monthRevenue = calculateRevenue(monthStudents);
+      const monthCommission = (monthRevenue * commissionRate) / 100;
 
       monthlyTrends.push({
-        month: date.toLocaleDateString('en-US', { month: 'short' }),
+        month: start.toLocaleString('en-US', { month: 'short' }),
         totalRevenue: monthRevenue,
-        totalCommissions: monthCommissions,
-        netIncome: monthNetIncome,
+        totalCommissions: monthCommission,
+        netIncome: monthRevenue - monthCommission,
         studentEnrollments: monthStudents.length
       });
     }
 
-    // Revenue breakdown by categories
+    /* ----------------------------------
+       4️⃣ Revenue breakdown
+    ---------------------------------- */
     const revenueBreakdown: RevenueBreakdown[] = [
-      {
-        category: 'Course Fees',
-        amount: totalRevenue,
-        percentage: 85
-      },
-      {
-        category: 'Application Fees',
-        amount: totalStudents * 500, // Assume $500 application fee per student
-        percentage: 8
-      },
-      {
-        category: 'Administrative Fees',
-        amount: totalStudents * 200, // Assume $200 admin fee per student
-        percentage: 4
-      },
-      {
-        category: 'Other Services',
-        amount: totalStudents * 150, // Assume $150 other services per student
-        percentage: 3
-      }
+      { category: 'Course Fees', amount: totalRevenue, percentage: 0 },
+      { category: 'Application Fees', amount: totalStudents * 500, percentage: 0 },
+      { category: 'Administrative Fees', amount: totalStudents * 200, percentage: 0 },
+      { category: 'Other Services', amount: totalStudents * 150, percentage: 0 }
     ];
 
-    // Recalculate total revenue including all fees
-    const totalAllRevenue = revenueBreakdown.reduce((sum, item) => sum + item.amount, 0);
-    
-    // Update percentages based on actual amounts
-    revenueBreakdown.forEach(item => {
-      item.percentage = totalAllRevenue > 0 ? (item.amount / totalAllRevenue) * 100 : 0;
+    const totalAllRevenue = revenueBreakdown.reduce((s, r) => s + r.amount, 0);
+
+    revenueBreakdown.forEach(r => {
+      r.percentage = totalAllRevenue ? (r.amount / totalAllRevenue) * 100 : 0;
     });
 
-    // Get top performing agents by revenue
+    /* ----------------------------------
+       5️⃣ Top performing agents
+       (single agent if agentId passed)
+    ---------------------------------- */
     const agents = await prisma.agent.findMany({
+      where: agentId ? { id: agentId } : undefined,
       select: {
         id: true,
         first_name: true,
@@ -144,61 +129,51 @@ export async function GET() {
       }
     });
 
-    const topPerformingAgents = [];
-    
-    for (const agent of agents) {
-      const agentIdNum = parseInt(agent.id);
+    const topPerformingAgents = agents.map(agent => {
       const agentStudents = approvedStudents.filter(
-        student => student.agentId === agentIdNum
+        s => s.agentId === agent.id
       );
 
-      let agentRevenue = 0;
-      agentStudents.forEach(student => {
-        if (student.totalCourseFee) {
-          const feeString = student.totalCourseFee.replace(/[^\d.-]/g, '');
-          const fee = parseFloat(feeString) || 0;
-          agentRevenue += fee;
-        }
-      });
+      const revenue = calculateRevenue(agentStudents);
+      const commission = (revenue * commissionRate) / 100;
 
-      const agentCommission = (agentRevenue * commissionRate) / 100;
+      return {
+        agentId: agent.id,
+        agentName: `${agent.first_name} ${agent.last_name}`,
+        revenue,
+        commission,
+        students: agentStudents.length
+      };
+    }).filter(a => a.revenue > 0);
 
-      if (agentRevenue > 0) {
-        topPerformingAgents.push({
-          agentName: `${agent.first_name} ${agent.last_name}`,
-          revenue: agentRevenue,
-          commission: agentCommission,
-          students: agentStudents.length
-        });
-      }
-    }
-
-    // Sort by revenue and take top 5
     topPerformingAgents.sort((a, b) => b.revenue - a.revenue);
-    const top5Agents = topPerformingAgents.slice(0, 5);
 
+    /* ----------------------------------
+       6️⃣ Final response
+    ---------------------------------- */
     const financeOverview: FinanceOverview = {
       summary: {
         totalRevenue: totalAllRevenue,
         totalCommissions,
         netIncome: totalAllRevenue - totalCommissions,
         totalStudents,
-        averageRevenuePerStudent: totalStudents > 0 ? totalAllRevenue / totalStudents : 0,
+        averageRevenuePerStudent: totalStudents ? totalAllRevenue / totalStudents : 0,
         commissionRate,
-        profitMargin: totalAllRevenue > 0 ? ((totalAllRevenue - totalCommissions) / totalAllRevenue) * 100 : 0
+        profitMargin: totalAllRevenue
+          ? ((totalAllRevenue - totalCommissions) / totalAllRevenue) * 100
+          : 0
       },
       monthlyTrends,
       revenueBreakdown,
-      topPerformingAgents: top5Agents
+      topPerformingAgents: agentId
+        ? topPerformingAgents
+        : topPerformingAgents.slice(0, 5)
     };
 
-    return NextResponse.json({
-      success: true,
-      data: financeOverview
-    });
+    return NextResponse.json({ success: true, data: financeOverview });
 
   } catch (error) {
-    console.error('Error fetching finance overview:', error);
+    console.error('Finance overview error:', error);
     return NextResponse.json(
       { success: false, message: 'Failed to fetch finance overview' },
       { status: 500 }
