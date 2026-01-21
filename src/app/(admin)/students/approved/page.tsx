@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import StudentsTable from '@/components/tables/StudentsTable';
 import ComponentCard from '@/components/common/ComponentCard';
 import PageBreadCrumb from '@/components/common/PageBreadCrumb';
+import { useAuth } from '@/context/AuthContext';
 
 interface Student {
   id: number;
@@ -43,12 +44,27 @@ const ApprovedStudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchApprovedStudents = async () => {
+      if (!user) {
+        return;
+      }
+
       try {
         setLoading(true);
-        const response = await fetch('/api/students?visaGrantStatus=In Effect');
+        let response;
+        if (user?.role === 'agent' && user?.id) {
+          response = await fetch(`/api/agents/${user.id}/students?visaGrantStatus=In Effect`);
+        } else if (user?.role === 'admin') {
+          response = await fetch('/api/students?visaGrantStatus=In Effect');
+        } else {
+          setError('Unauthorized access');
+          setLoading(false);
+          return;
+        }
+
         const result: ApiResponse = await response.json();
         
         if (result.success) {
@@ -65,7 +81,7 @@ const ApprovedStudentsPage = () => {
     };
 
     fetchApprovedStudents();
-  }, []);
+  }, [user]);
 
   if (loading) {
     return (
