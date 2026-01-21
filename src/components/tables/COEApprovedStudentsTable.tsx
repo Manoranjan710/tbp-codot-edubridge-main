@@ -8,6 +8,8 @@ import {
 } from "../ui/table";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
+import { usePagination } from "@/hooks/usePagination";
+import Pagination from "../ui/pagination/Pagination";
 
 interface Student {
   id: number;
@@ -212,6 +214,20 @@ const downloadCSV = (students: Student[]) => {
 };
 
 export default function COEApprovedStudentsTable({ students }: COEApprovedStudentsTableProps) {
+  const {
+    currentPage,
+    totalPages,
+    startIndex,
+    endIndex,
+    itemsPerPage,
+    goToPage
+  } = usePagination({
+    totalItems: students.length,
+    itemsPerPage: 20
+  });
+
+  const currentStudents = students.slice(startIndex, endIndex);
+
   if (!students || students.length === 0) {
     return (
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -306,7 +322,7 @@ export default function COEApprovedStudentsTable({ students }: COEApprovedStuden
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {students.map((student) => (
+              {currentStudents.map((student) => (
                 <TableRow key={student.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
                   <TableCell className="px-5 py-4 sm:px-6 text-start">
                     <div className="flex items-center gap-3">
@@ -416,6 +432,14 @@ export default function COEApprovedStudentsTable({ students }: COEApprovedStuden
           </Table>
         </div>
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={students.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={goToPage}
+      />
     </div>
   );
 }
