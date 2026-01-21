@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PendingStudentsTable from '@/components/tables/PendingStudentsTable';
 import ComponentCard from '@/components/common/ComponentCard';
 import PageBreadCrumb from '@/components/common/PageBreadCrumb';
+import { useAuth } from '@/context/AuthContext';
 
 interface Student {
   id: number;
@@ -43,13 +44,27 @@ const PendingStudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const fetchPendingStudents = async () => {
+    if (!user) {
+      return;
+    }
+
     try {
       setLoading(true);
-      const response = await fetch('/api/students?coeStatus=Pending');
+      let response;
+      if (user?.role === 'agent' && user?.id) {
+        response = await fetch(`/api/agents/${user.id}/students?coeStatus=Pending`);
+      } else if (user?.role === 'admin') {
+        response = await fetch('/api/students?coeStatus=Pending');
+      } else {
+        setError('Invalid user role');
+        setLoading(false);
+        return;
+      }
       const result: ApiResponse = await response.json();
-      
+
       if (result.success) {
         setStudents(result.data);
       } else {

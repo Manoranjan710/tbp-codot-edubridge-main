@@ -60,7 +60,7 @@ const ApprovedStudentsPage = () => {
         } else if (user?.role === 'admin') {
           response = await fetch('/api/students?visaGrantStatus=In Effect');
         } else {
-          setError('Unauthorized access');
+          setError('Invalid user role');
           setLoading(false);
           return;
         }

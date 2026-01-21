@@ -326,15 +326,15 @@ export default function StudentsTable({ students }: StudentsTableProps) {
             </TableBody>
           </Table>
         </div>
-
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={students.length}
-          itemsPerPage={itemsPerPage}
-          onPageChange={goToPage}
-        />
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={students.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={goToPage}
+      />
     </div>
   );
 }
