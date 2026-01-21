@@ -18,11 +18,25 @@ export async function GET(request: NextRequest, { params }: Params) {
       );
     }
 
+    const { searchParams } = new URL(request.url);
+    const coeStatus = searchParams.get('coeStatus');
+    const visaGrantStatus = searchParams.get('visaGrantStatus');
+
+    const whereClause: any = {
+      agentId: agentId
+    };
+
+    if (coeStatus) {
+      whereClause.coeStatus = coeStatus;
+    }
+
+    if (visaGrantStatus) {
+      whereClause.visaGrantStatus = visaGrantStatus;
+    }
+
     // Fetch all students under the agent
     const students = await prisma.student.findMany({
-      where: {
-        agentId: agentId
-      },
+      where: whereClause,
       orderBy: {
         createdAt: 'desc'
       }
@@ -30,8 +44,8 @@ export async function GET(request: NextRequest, { params }: Params) {
 
     if (students.length === 0) {
       return NextResponse.json(
-        { 
-          success: true, 
+        {
+          success: true,
           message: 'No students found for this agent',
           data: [],
           count: 0
@@ -52,8 +66,8 @@ export async function GET(request: NextRequest, { params }: Params) {
   } catch (error) {
     console.error('Fetch students error:', error);
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         message: 'Internal server error',
         ...(process.env.NODE_ENV === 'development' && {
           error: error instanceof Error ? error.message : 'Unknown error'
