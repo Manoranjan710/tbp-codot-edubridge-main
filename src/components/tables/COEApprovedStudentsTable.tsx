@@ -328,7 +328,7 @@ export default function COEApprovedStudentsTable({ students }: COEApprovedStuden
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <div>
                       <span className="block font-medium text-gray-800 dark:text-white/90">
-                        {student.firstName || student.familyName || 'N/A'}
+                        {student.agentName || 'N/A'}
                       </span>
                       <span className="block text-theme-xs text-gray-400 dark:text-gray-500">
                         ID: {student.agentId || 'N/A'}
