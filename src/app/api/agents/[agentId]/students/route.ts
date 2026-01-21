@@ -1,0 +1,65 @@
+import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+
+interface Params {
+  params: {
+    agentId: string;
+  };
+}
+
+export async function GET(request: NextRequest, { params }: Params) {
+  try {
+    const { agentId } = params;
+
+    if (!agentId) {
+      return NextResponse.json(
+        { success: false, message: 'Agent ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Fetch all students under the agent
+    const students = await prisma.student.findMany({
+      where: {
+        agentId: agentId
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+
+    if (students.length === 0) {
+      return NextResponse.json(
+        { 
+          success: true, 
+          message: 'No students found for this agent',
+          data: [],
+          count: 0
+        },
+        { status: 200 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Students fetched successfully',
+        count: students.length,
+        data: students
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Fetch students error:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: 'Internal server error',
+        ...(process.env.NODE_ENV === 'development' && {
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
+      },
+      { status: 500 }
+    );
+  }
+}
