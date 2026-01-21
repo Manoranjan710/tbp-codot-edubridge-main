@@ -87,7 +87,7 @@ export default function StatisticsChart({ data, loading, isAgent }: StatisticsCh
     },
     xaxis: {
       type: "category", // Category-based x-axis
-      categories: metrics?.monthlyAgentPerformance.map(item => item.month) || [
+      categories: metrics?.monthlyAgentPerformance?.map(item => item.month) || [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ],

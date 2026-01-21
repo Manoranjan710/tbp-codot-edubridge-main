@@ -55,6 +55,40 @@ export async function POST(request: NextRequest) {
       return response;
     }
 
+    // Test admin credentials
+    if (email.toLowerCase() === 'admin@college.com' && password === 'password123') {
+      const token = jwt.sign(
+        { 
+          userId: 'cmknjbyal0000w47club5wc8k', 
+          email: email.toLowerCase(),
+          role: 'admin' 
+        },
+        process.env.JWT_SECRET || 'your-secret-key',
+        { expiresIn: '7d' }
+      );
+
+      const response = NextResponse.json({
+        success: true,
+        message: 'Sign in successful',
+        user: {
+          id: 'cmknjbyal0000w47club5wc8k',
+          email: email.toLowerCase(),
+          firstName: 'Admin',
+          lastName: 'User',
+          role: 'admin'
+        }
+      });
+
+      response.cookies.set('auth-token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      });
+
+      return response;
+    }
+
     // Find user by email
     const user = await prisma.user.findUnique({
       where: {
