@@ -92,7 +92,16 @@ export default function RecentApplications({ data, loading, isAgent }: RecentApp
     );
   }
 
-  const students = isAgent ? data?.studentData?.data?.slice(0, 10) || [] : [];
+  // Get students array - handle different data structures
+  let students: any[] = [];
+  
+  if (isAgent && data?.studentData) {
+    // For agent: studentData contains the API response with data array
+    const studentArray = Array.isArray(data.studentData) 
+      ? data.studentData 
+      : (data.studentData?.data || []);
+    students = studentArray.slice(0, 10);
+  }
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
@@ -102,7 +111,7 @@ export default function RecentApplications({ data, loading, isAgent }: RecentApp
             Recent Applications
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Latest 10 student applications
+            {isAgent ? 'Latest 10 of your student applications' : 'Latest 10 student applications'}
           </p>
         </div>
 

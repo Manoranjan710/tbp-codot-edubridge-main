@@ -82,16 +82,21 @@ export default function MonthlyTarget({ data, loading, isAgent }: MonthlyTargetP
     setIsOpen(false);
   }
 
+  const titleText = isAgent ? "Approval Rate" : "Approval Rate";
+  const descriptionText = isAgent 
+    ? "Your student application approval performance" 
+    : "Student application approval performance";
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6">
         <div className="flex justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-              Approval Rate
+              {titleText}
             </h3>
             <p className="mt-1 font-normal text-gray-500 text-theme-sm dark:text-gray-400">
-              Student application approval performance
+              {descriptionText}
             </p>
           </div>
           <div className="relative inline-block">

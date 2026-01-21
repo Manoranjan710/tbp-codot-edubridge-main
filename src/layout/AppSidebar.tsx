@@ -33,7 +33,7 @@ const navItems: NavItem[] = [
     name: "Dashboard",
     subItems: [
       { name: "Overview", path: "/", pro: false },
-      { name: "Analytics", path: "/analytics", pro: false }
+      // { name: "Analytics", path: "/analytics", pro: false }
     ],
   },
   {
