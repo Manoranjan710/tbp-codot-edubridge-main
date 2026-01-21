@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import COEApprovedStudentsTable from '@/components/tables/COEApprovedStudentsTable';
 import ComponentCard from '@/components/common/ComponentCard';
 import PageBreadCrumb from '@/components/common/PageBreadCrumb';
+import { useAuth } from '@/context/AuthContext';
 
 interface Student {
   id: number;
@@ -45,13 +46,24 @@ const COEApprovedStudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const fetchCOEApprovedStudents = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/students?coeStatus=Studying');
+
+      let response;
+
+      if (user?.role === 'agent' && user?.id) {
+        // If user is an agent, fetch their students with COE status filter
+        response = await fetch(`/api/agents/${user.id}/students?coeStatus=Studying`);
+      } else {
+        // Admin users fetch all students with COE status filter
+        response = await fetch('/api/students?coeStatus=Studying');
+      }
+
       const result: ApiResponse = await response.json();
-      
+
       if (result.success) {
         setStudents(result.data);
       } else {
@@ -66,8 +78,10 @@ const COEApprovedStudentsPage = () => {
   };
 
   useEffect(() => {
-    fetchCOEApprovedStudents();
-  }, []);
+    if (user) {
+      fetchCOEApprovedStudents();
+    }
+  }, [user]);
 
   if (loading) {
     return (
