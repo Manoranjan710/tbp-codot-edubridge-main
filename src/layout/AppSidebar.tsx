@@ -219,7 +219,15 @@ const AppSidebar: React.FC = () => {
               }}
             >
               <ul className="mt-2 space-y-1 ml-9">
-                {nav.subItems.map((subItem) => (
+                {nav.subItems
+                  .filter((subItem) => {
+                    // Hide "Agents Transactions" for agent users
+                    if (user?.role === 'agent' && subItem.name === 'Agents Transactions') {
+                      return false;
+                    }
+                    return true;
+                  })
+                  .map((subItem) => (
                   <li key={subItem.name}>
                     <Link
                       href={subItem.path}
