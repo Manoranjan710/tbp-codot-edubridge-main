@@ -42,19 +42,38 @@ const StudentsPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Wait for user to be loaded
+      if (!user) {
+        return;
+      }
+
       try {
         setLoading(true);
-        
-        // Fetch students only for admin
-        if (user?.role === 'admin') {
-          const response = await fetch('/api/students');
-          const result: ApiResponse = await response.json();
-          
-          if (result.success) {
-            setStudents(result.data);
-          } else {
-            setError(result.error || 'Failed to fetch students');
-          }
+        let response;
+
+        if (user.role === 'agent' && user.id) {
+          // If user is an agent, fetch their students
+          response = await fetch(`/api/agents/${user.id}/students`);
+        } else if (user.role === 'admin') {
+          // If user is admin, fetch all students
+          response = await fetch('/api/students');
+        } else {
+          setError('Invalid user role');
+          setLoading(false);
+          return;
+        }
+
+        if (!response) {
+          setError('Failed to fetch data');
+          setLoading(false);
+          return;
+        }
+
+        const result: ApiResponse = await response.json();
+        if (result.success) {
+          setStudents(result.data);
+        } else {
+          setError(result.error || 'Failed to fetch students');
         }
       } catch (err) {
         setError('Error fetching data');
@@ -108,23 +127,28 @@ const StudentsPage = () => {
   return (
     <>
       <PageBreadCrumb title="Students" />
-      
-      {user?.role === 'admin' && (
+
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Students</h1>
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Manage and view all registered students ({students.length} total)
+            {user?.role === 'agent'
+              ? `Your students (${students.length} total)`
+              : `Manage and view all registered students (${students.length} total)`
+            }
           </p>
         </div>
-        <ComponentCard
-          title="All Students"
-          desc="Complete list of all students in the system"
-        >
-          <StudentsTable students={students} />
-        </ComponentCard>
       </div>
-      )}
+
+      <ComponentCard
+        title={user?.role === 'agent' ? 'My Students' : 'All Students'}
+        desc={user?.role === 'agent'
+          ? 'Students assigned to you'
+          : 'Complete list of all students in the system'
+        }
+      >
+        <StudentsTable students={students} />
+      </ComponentCard>
     </>
   );
 };

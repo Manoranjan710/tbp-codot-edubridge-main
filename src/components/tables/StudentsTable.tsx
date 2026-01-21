@@ -7,6 +7,8 @@ import {
   TableRow,
 } from "../ui/table";
 import Badge from "../ui/badge/Badge";
+import Pagination from "../ui/pagination/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 
 interface Student {
   id: number;
@@ -16,9 +18,9 @@ interface Student {
   providerCode: string | null;
   coeCode: string | null;
   coeStatus: string | null;
-  visaGranted:string | null;
-  visaGrantStatus:string | null;
-  visaGrantNumber:string | null;
+  visaGranted: string | null;
+  visaGrantStatus: string | null;
+  visaGrantNumber: string | null;
   coeType: string | null;
   firstName: string | null;
   familyName: string | null;
@@ -49,7 +51,7 @@ const formatDate = (dateString: string) => {
 
 const getVisaStatusBadgeColor = (status: string | null) => {
   if (!status) return 'light';
-  
+
   switch (status.toLowerCase()) {
     case 'in effect':
     case 'granted':
@@ -72,7 +74,7 @@ const getVisaStatusBadgeColor = (status: string | null) => {
 
 const getCountryFlag = (country: string | null) => {
   if (!country) return '🌐';
-  
+
   const countryFlags: { [key: string]: string } = {
     'Australia': '🇦🇺',
     'Canada': '🇨🇦',
@@ -132,6 +134,20 @@ const getCountryFlag = (country: string | null) => {
 };
 
 export default function StudentsTable({ students }: StudentsTableProps) {
+  const {
+    currentPage,
+    totalPages,
+    startIndex,
+    endIndex,
+    itemsPerPage,
+    goToPage
+  } = usePagination({
+    totalItems: students.length,
+    itemsPerPage: 20
+  });
+
+  const currentStudents = students.slice(startIndex, endIndex);
+
   if (!students || students.length === 0) {
     return (
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -206,7 +222,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {students.map((student) => (
+              {currentStudents.map((student) => (
                 <TableRow key={student.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
                   <TableCell className="px-5 py-4 sm:px-6 text-start">
                     <div className="flex items-center gap-3">
@@ -248,7 +264,7 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <div>
                       {student.emailAddress && (
-                        <a 
+                        <a
                           href={`mailto:${student.emailAddress}`}
                           className="block hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate max-w-[150px]"
                           title={student.emailAddress}
@@ -310,6 +326,14 @@ export default function StudentsTable({ students }: StudentsTableProps) {
             </TableBody>
           </Table>
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={students.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={goToPage}
+        />
       </div>
     </div>
   );
