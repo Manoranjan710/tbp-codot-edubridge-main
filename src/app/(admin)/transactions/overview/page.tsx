@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Metadata } from "next";
 import { useAuth } from "@/context/AuthContext";
 import ComponentCard from "@/components/common/ComponentCard";
+import FinanceOverview from "@/components/finance/FinanceOverview";
 
 interface MonthlySummary {
   month: string;
@@ -127,7 +128,7 @@ export default function FinanceOverviewPage() {
       </div>
 
       {/* Financial Overview for Agents */}
-      {user?.role === 'agent' && financeData && (
+      {(user?.role === 'agent' && financeData) && (
         <>
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {/* Total Revenue Card */}
@@ -249,6 +250,10 @@ export default function FinanceOverviewPage() {
             </ComponentCard>
           </div>
         </>
+      )}
+
+      {user?.role === "admin" && (
+        <FinanceOverview />
       )}
     </div>
   );
