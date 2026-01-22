@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 interface AgentTransaction {
-  agentId: number;
+  agentId: string;
   agentName: string;
   agentEmail: string;
   totalStudents: number;
@@ -45,12 +45,12 @@ export async function GET() {
     const commissionRate = 15; // 15% commission rate
 
     for (const agent of agents) {
-      // Convert agent.id (string) to number for comparison
-      const agentIdNum = parseInt(agent.id);
+      // Use agent.id (string) directly for comparison
+      const agentId = agent.id;
       
       // Get students for this agent
       const agentStudents = approvedStudents.filter(
-        student => student.agentId === agentIdNum
+        student => student.agentId === agentId
       );
 
       // Calculate total course value (only for approved visa students)
@@ -70,11 +70,11 @@ export async function GET() {
 
       // Get total students for this agent (including non-approved)
       const totalStudents = await prisma.student.count({
-        where: { agentId: agentIdNum }
+        where: { agentId }
       });
 
       agentTransactions.push({
-        agentId: agentIdNum,
+        agentId,
         agentName: `${agent.first_name} ${agent.last_name}`,
         agentEmail: agent.email,
         totalStudents,
