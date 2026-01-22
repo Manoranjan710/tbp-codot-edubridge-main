@@ -65,21 +65,17 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    // Create a mapping from numeric index to agent names
-    // Since agentId in students is 1-12, we'll map them to the first 12 agents
-    const agentMap: { [key: number]: { name: string; id: string } } = {};
-    agents.slice(0, 12).forEach((agent, index) => {
-      agentMap[index + 1] = {
-        name: `${agent.first_name} ${agent.last_name}`,
-        id: agent.id
-      };
+    // Create a mapping from agent ID to agent name
+    const agentMap: { [key: string]: string } = {};
+    agents.forEach((agent) => {
+      agentMap[agent.id] = `${agent.first_name} ${agent.last_name}`;
     });
 
     // Add agent information to students
     const studentsWithAgents = students.map(student => ({
       ...student,
-      agentName: student.agentId ? agentMap[student.agentId]?.name || `Agent ${student.agentId}` : null,
-      agentFullId: student.agentId ? agentMap[student.agentId]?.id || null : null
+      agentName: student.agentId ? agentMap[student.agentId] || null : null,
+      agentFullId: student.agentId
     }));
     
     const totalCount = await prisma.student.count({ where: whereClause });

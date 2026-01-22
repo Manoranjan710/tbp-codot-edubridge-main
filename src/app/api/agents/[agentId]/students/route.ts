@@ -54,12 +54,29 @@ export async function GET(request: NextRequest, { params }: Params) {
       );
     }
 
+    // Fetch agent information to get the agent name
+    const agent = await prisma.agent.findUnique({
+      where: { id: agentId },
+      select: {
+        first_name: true,
+        last_name: true
+      }
+    });
+
+    const agentName = agent ? `${agent.first_name} ${agent.last_name}` : null;
+
+    // Add agent name to each student
+    const studentsWithAgentName = students.map(student => ({
+      ...student,
+      agentName: agentName
+    }));
+
     return NextResponse.json(
       {
         success: true,
         message: 'Students fetched successfully',
-        count: students.length,
-        data: students
+        count: studentsWithAgentName.length,
+        data: studentsWithAgentName
       },
       { status: 200 }
     );
