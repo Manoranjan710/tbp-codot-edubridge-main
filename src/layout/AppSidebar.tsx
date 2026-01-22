@@ -43,7 +43,7 @@ const navItems: NavItem[] = [
       { name: "All Agents", path: "/agents", pro: false },
       { name: "Pending Approval", path: "/agents/pending", pro: false },
       { name: "Agent Performance", path: "/agents/performance", pro: false },
-      { name: "Low Performing", path: "/agents/low-performing", pro: false}
+      { name: "Low Performing", path: "/agents/low-performing", pro: false }
     ],
   },
   {
@@ -285,10 +285,14 @@ const AppSidebar: React.FC = () => {
   const isActive = useCallback((path: string) => path === pathname, [pathname]);
 
   useEffect(() => {
+    // Use filtered items to match the rendered menu structure
+    const filteredNavItems = getFilteredNavItems();
+    const filteredOthersItems = getFilteredOthersItems();
+
     // Check if the current path matches any submenu item
     let submenuMatched = false;
     ["main", "others"].forEach((menuType) => {
-      const items = menuType === "main" ? navItems : othersItems;
+      const items = menuType === "main" ? filteredNavItems : filteredOthersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
@@ -308,7 +312,7 @@ const AppSidebar: React.FC = () => {
     if (!submenuMatched) {
       setOpenSubmenu(null);
     }
-  }, [pathname, isActive]);
+  }, [pathname, isActive, user?.role]);
 
   useEffect(() => {
     // Set the height of the submenu items when the submenu is opened
