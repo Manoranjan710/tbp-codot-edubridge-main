@@ -122,8 +122,7 @@ const AppSidebar: React.FC = () => {
       return navItems.filter((item) => 
         item.name === 'Dashboard' ||
         item.name === 'Student Applications' ||
-        item.name === 'Transactions' ||
-        item.name === 'PRISMS'
+        item.name === 'Transactions'
       );
     }
     // For admin and other roles, show all items
