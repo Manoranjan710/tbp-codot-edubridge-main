@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const whereClause: any = {};
     
     if (agentId) {
-      whereClause.agentId = parseInt(agentId);
+      whereClause.agentId = agentId;
     }
     
     if (coeStatus) {

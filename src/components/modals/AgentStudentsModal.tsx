@@ -263,7 +263,7 @@ const AgentStudentsModal: React.FC<AgentStudentsModalProps> = ({
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex justify-end gap-3 p-3 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
