@@ -49,6 +49,31 @@ const formatDate = (dateString: string) => {
   });
 };
 
+const getVisaStatus = (visaGrantStatus: string | null, coeStatus: string | null) => {
+  // Case 1: If visaGrantStatus has one of these values, show it as is
+  if (visaGrantStatus) {
+    const lower = visaGrantStatus.toLowerCase();
+    if (lower === 'in effect' || lower === 'cancelled' || lower === 'ceased') {
+      return visaGrantStatus;
+    }
+  }
+  
+  // Case 2: If visaGrantStatus is null, check coeStatus
+  if (!visaGrantStatus && coeStatus) {
+    const coeStatusLower = coeStatus.toLowerCase();
+    
+    if (coeStatusLower === 'cancelled') {
+      return 'Cancelled';
+    }
+    
+    if (coeStatusLower === 'approved') {
+      return 'Awaiting approval';
+    }
+  }
+  
+  return null;
+};
+
 const getVisaStatusBadgeColor = (status: string | null) => {
   if (!status) return 'light';
 
@@ -66,6 +91,7 @@ const getVisaStatusBadgeColor = (status: string | null) => {
       return 'warning';
     case 'pending':
     case 'under review':
+    case 'awaiting visa approval':
       return 'info';
     default:
       return 'light';
@@ -228,12 +254,14 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center">
                         <span className="text-white font-medium text-sm">
-                          {(student.firstName?.charAt(0) || '?')}{(student.familyName?.charAt(0) || '')}
+                          {(student.firstName?.charAt(0) || '')}{(student.familyName?.charAt(0) || '')}
                         </span>
                       </div>
                       <div>
-                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                          {student.firstName || 'N/A'} {student.familyName || ''}
+                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90 max-w-[100px] truncate" title={`${student.firstName || ''} ${student.familyName || ''}`}>
+                          {((student.firstName || '') + ' ' + (student.familyName || '')).length > 10 
+                            ? ((student.firstName || '') + ' ' + (student.familyName || '')).substring(0, 10) + '...'
+                            : `${student.firstName || ''} ${student.familyName || ''}`}
                         </span>
                         <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
                           ID: {student.id}
@@ -303,12 +331,17 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                     </div>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <Badge
-                      size="sm"
-                      color={getVisaStatusBadgeColor(student.visaGrantStatus)}
-                    >
-                      {student.visaGrantStatus ? student.visaGrantStatus.charAt(0).toUpperCase() + student.visaGrantStatus.slice(1) : 'N/A'}
-                    </Badge>
+                    {(() => {
+                      const visaStatus = getVisaStatus(student.visaGrantStatus, student.coeStatus);
+                      return (
+                        <Badge
+                          size="sm"
+                          color={getVisaStatusBadgeColor(visaStatus)}
+                        >
+                          {visaStatus ? visaStatus.charAt(0).toUpperCase() + visaStatus.slice(1) : 'N/A'}
+                        </Badge>
+                      );
+                    })()}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     <div>
