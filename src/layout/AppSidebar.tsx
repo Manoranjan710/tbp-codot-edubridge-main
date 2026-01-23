@@ -220,9 +220,10 @@ const AppSidebar: React.FC = () => {
               <ul className="mt-2 space-y-1 ml-9">
                 {nav.subItems
                   .filter((subItem) => {
-                    // Hide "Agents Transactions" for agent users
-                    if (user?.role === 'agent' && subItem.name === 'Agents Transactions') {
-                      return false;
+                    // Hide "Agents Transactions" and "Pending Review" for agent users
+                    if (user?.role === 'agent') {
+                      if (subItem.name === 'Agents Transactions') return false;
+                      if (subItem.name === 'Pending Review') return false;
                     }
                     return true;
                   })
@@ -364,22 +365,22 @@ const AppSidebar: React.FC = () => {
             <>
               <Image
                 className="dark:hidden"
-                src="/images/logo/logo.svg"
+                src="/images/logo/logo.jpeg"
                 alt="Logo"
-                width={150}
+                width={60}
                 height={40}
               />
               <Image
                 className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
+                src="/images/logo/logo.jpeg"
                 alt="Logo"
-                width={150}
+                width={60}
                 height={40}
               />
             </>
           ) : (
             <Image
-              src="/images/logo/logo-icon.svg"
+              src="/images/logo/logo.jpeg"
               alt="Logo"
               width={32}
               height={32}
